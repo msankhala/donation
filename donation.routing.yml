@@ -1,3 +1,6 @@
+# Entity routes are defined on Entity Class. There is no need to define entity
+# routes
+
 # entity.donation.collection:
 #   path: '/admin/content/donations'
 #   defaults:
