@@ -1,0 +1,6 @@
+administer donation entity:
+  title: 'Administer Donation Entity'
+  restrict access: true
+
+# permission_callbacks:
+#   - '\Drupal\practical\PracticalPermissionsGenerator::practicalTypePermissions'

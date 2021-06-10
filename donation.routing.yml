@@ -1,0 +1,7 @@
+# entity.donation.collection:
+#   path: '/admin/content/donations'
+#   defaults:
+#     _entity_list: donation
+#     _title: 'Donations'
+#   requirements:
+#     _permission: 'administer donation entity'

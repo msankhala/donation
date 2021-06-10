@@ -1,0 +1,5 @@
+name: Donation
+type: module
+description: Donation Entity without bundle, Allows you to collect donations.
+core_version_requirement: ^8.8 || ^9
+package: Custom Entities

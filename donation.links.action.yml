@@ -1,0 +1,12 @@
+donation_action_add:
+  route_name: entity.donation.add_form
+  title: 'Add Donation'
+  appears_on:
+    - entity.donation.collection
+
+# donation_type_action_add:
+#   route_name: entity.practical_type.add_form
+#   title: 'Add Practical entity type (bundle)'
+#   appears_on:
+#     - entity.practical_type.collection
+
