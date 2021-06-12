@@ -172,7 +172,7 @@ class DonationEntity extends ContentEntityBase implements DonationEntityInterfac
       ->setLabel(t('Amount'))
       ->setDescription(t('The Donation amount donated by donor.'))
       ->setSettings([
-        'precision' => 5,
+        'precision' => 15,
         'scale' => 2,
       ])
       // ->setDefaultValue('')
