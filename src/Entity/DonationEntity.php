@@ -149,17 +149,18 @@ class DonationEntity extends ContentEntityBase implements DonationEntityInterfac
     $fields['amount_pledged'] = BaseFieldDefinition::create('decimal')
       ->setLabel(t('Amount Pledged'))
       ->setDescription(t('The Donation amount that has been pledged by donor.'))
-      // ->setSettings([
-      //   'allowed_values' => [
-      //     'online' => 'Online',
-      //     'offline' => 'Offline',
-      //   ],
-      //   'text_processing' => 0,
-      // ])
-      ->setDefaultValue('')
+      ->setSettings([
+        'precision' => 5,
+        'scale' => 2,
+      ])
+      // ->setDefaultValue('')
       ->setDisplayOptions('view', [
         'label' => 'above',
         'type' => 'string',
+        'weight' => -4,
+      ])
+      ->setDisplayOptions('form', [
+        'type' => 'number',
         'weight' => -4,
       ])
       // ->setDisplayOptions('form', [
@@ -173,10 +174,18 @@ class DonationEntity extends ContentEntityBase implements DonationEntityInterfac
     $fields['amount'] = BaseFieldDefinition::create('decimal')
       ->setLabel(t('Amount'))
       ->setDescription(t('The Donation amount donated by donor.'))
+      ->setSettings([
+        'precision' => 5,
+        'scale' => 2,
+      ])
       // ->setDefaultValue('')
       ->setDisplayOptions('view', [
         'label' => 'above',
         'type' => 'string',
+        'weight' => -4,
+      ])
+      ->setDisplayOptions('form', [
+        'type' => 'number',
         'weight' => -4,
       ])
       ->setDisplayConfigurable('form', TRUE)
