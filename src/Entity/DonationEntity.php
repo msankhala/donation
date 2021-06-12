@@ -2,60 +2,82 @@
 
 namespace Drupal\donation\Entity;
 
+use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Entity\ContentEntityBase;
 use Drupal\Core\Entity\EntityChangedTrait;
-use Drupal\Core\Entity\EntityStorageInterface;
+// use Drupal\Core\Entity\EntityPublishedTrait;
 use Drupal\Core\Entity\EntityTypeInterface;
-use Drupal\Core\Field\BaseFieldDefinition;
-use Drupal\user\UserInterface;
 
 /**
- * Defines the Donation entity with only one default bundle.
+ * Defines the Donation entity.
+ *
+ * @ingroup donation
  *
  * @ContentEntityType(
  *   id = "donation",
  *   label = @Translation("Donation"),
- *   label_singular = @Translation("Donation"),
- *   label_plural = @Translation("Donations"),
- *   label_count = @PluralTranslation(
- *     singular = "@count Donation",
- *     plural = "@count Donations",
- *   ),
- *   base_table = "donation",
- *   entity_keys = {
- *     "id" = "id",
- *     "uid" = "uid",
- *     "created" = "created",
- *     "changed" = "changed",
- *   },
- *   fieldable = FALSE,
- *   admin_permission = "administer donation entity",
+ *   bundle_label = @Translation("Donation type"),
  *   handlers = {
  *     "view_builder" = "Drupal\Core\Entity\EntityViewBuilder",
- *     "list_builder" = "Drupal\donation\ListBuilder\DonationListBuilder",
- *     "views_data" = "Drupal\views\EntityViewsData",
+ *     "list_builder" = "Drupal\donation\ListBuilder\DonationEntityListBuilder",
+ *     "views_data" = "Drupal\donation\Entity\DonationEntityViewsData",
+ *     "translation" = "Drupal\donation\Translation\DonationEntityTranslationHandler",
+ *
  *     "form" = {
  *       "default" = "Drupal\donation\Form\DonationEntityForm",
  *       "add" = "Drupal\donation\Form\DonationEntityForm",
  *       "edit" = "Drupal\donation\Form\DonationEntityForm",
- *       "delete" = "Drupal\Core\Entity\ContentEntityDeleteForm",
+ *       "delete" = "Drupal\donation\Form\DonationEntityDeleteForm",
  *     },
  *     "route_provider" = {
- *       "html" = "Drupal\Core\Entity\Routing\AdminHtmlRouteProvider",
+ *       "html" = "Drupal\donation\Routing\DonationEntityHtmlRouteProvider",
  *     },
+ *     "access" = "Drupal\donation\Access\DonationEntityAccessControlHandler",
+ *   },
+ *   base_table = "donation",
+ *   data_table = "donation_field_data",
+ *   translatable = TRUE,
+ *   permission_granularity = "bundle",
+ *   admin_permission = "administer donation entities",
+ *   entity_keys = {
+ *     "id" = "id",
+ *     "bundle" = "type",
+ *     "label" = "name",
+ *     "uuid" = "uuid",
+ *     "langcode" = "langcode",
+ *     "published" = "status",
  *   },
  *   links = {
- *     "canonical" = "/donation/{donation}",
- *     "add-form" = "/donation/add",
- *     "edit-form" = "/donation/{donation}/edit",
- *     "delete-form" = "/donation/{donation}/delete",
- *     "collection" = "/admin/content/donations",
+ *     "canonical" = "/admin/donations/donation/{donation}",
+ *     "add-page" = "/admin/donations/donation/add",
+ *     "add-form" = "/admin/donations/donation/add/{donation_type}",
+ *     "edit-form" = "/admin/donations/donation/{donation}/edit",
+ *     "delete-form" = "/admin/donations/donation/{donation}/delete",
+ *     "collection" = "/admin/donations/donation",
  *   },
+ *   bundle_entity_type = "donation_type",
+ *   field_ui_base_route = "entity.donation_type.edit_form"
  * )
  */
 class DonationEntity extends ContentEntityBase implements DonationEntityInterface {
 
   use EntityChangedTrait;
+  // use EntityPublishedTrait;
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getName() {
+    return $this->get('name')->value;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setName($name) {
+    $this->set('name', $name);
+    return $this;
+  }
 
   /**
    * {@inheritdoc}
@@ -75,81 +97,38 @@ class DonationEntity extends ContentEntityBase implements DonationEntityInterfac
   /**
    * {@inheritdoc}
    */
-  public function getOwner() {
-    return $this->get('uid')->entity;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getOwnerId() {
-    return $this->get('uid')->target_id;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function setOwner(UserInterface $account) {
-    $this->set('uid', $account->id());
-    return $this;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function setOwnerId($uid) {
-    $this->set('uid', $uid);
-    return $this;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
     $fields = parent::baseFieldDefinitions($entity_type);
 
-    $fields['uid'] = BaseFieldDefinition::create('entity_reference')
-      ->setLabel(t('Authored by'))
-      ->setDescription(t('The user ID of author of the Practical entity.'))
-      ->setSetting('target_type', 'user')
-      ->setSetting('handler', 'default')
+    // Add the published field.
+    $fields += static::publishedBaseFieldDefinitions($entity_type);
+
+    $fields['name'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Name'))
+      ->setDescription(t('The name of the Donation entity.'))
+      ->setSettings([
+        'max_length' => 50,
+        'text_processing' => 0,
+      ])
+      ->setDefaultValue('')
       ->setDisplayOptions('view', [
-        'label' => 'hidden',
-        'type' => 'author',
-        'weight' => 0,
+        'label' => 'above',
+        'type' => 'string',
+        'weight' => -4,
       ])
       ->setDisplayOptions('form', [
-        'type' => 'entity_reference_autocomplete',
-        'weight' => 5,
-        'settings' => [
-          'match_operator' => 'CONTAINS',
-          'size' => '60',
-          'autocomplete_type' => 'tags',
-          'placeholder' => '',
-        ],
+        'type' => 'string_textfield',
+        'weight' => -4,
       ])
       ->setDisplayConfigurable('form', TRUE)
-      ->setDisplayConfigurable('view', TRUE);
+      ->setDisplayConfigurable('view', TRUE)
+      ->setRequired(TRUE);
 
-    // $fields['name'] = BaseFieldDefinition::create('string')
-    //   ->setLabel(t('Name'))
-    //   ->setDescription(t('The name of the Practical entity.'))
-    //   ->setSettings([
-    //     'max_length' => 50,
-    //     'text_processing' => 0,
-    //   ])
-    //   ->setDefaultValue('')
-    //   ->setDisplayOptions('view', [
-    //     'label' => 'hidden',
-    //     'type' => 'string',
-    //     'weight' => -4,
-    //   ])
-    //   ->setDisplayOptions('form', [
-    //     'type' => 'string_textfield',
-    //     'weight' => -4,
-    //   ])
-    //   ->setDisplayConfigurable('form', TRUE)
-    //   ->setDisplayConfigurable('view', TRUE);
+    $fields['status']->setDescription(t('A boolean indicating whether the Donation is published.'))
+      ->setDisplayOptions('form', [
+        'type' => 'boolean_checkbox',
+        'weight' => -3,
+      ]);
 
     $fields['created'] = BaseFieldDefinition::create('created')
       ->setLabel(t('Created'))
@@ -160,16 +139,6 @@ class DonationEntity extends ContentEntityBase implements DonationEntityInterfac
       ->setDescription(t('The time that the entity was last edited.'));
 
     return $fields;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function preCreate(EntityStorageInterface $storage_controller, array &$values) {
-    parent::preCreate($storage_controller, $values);
-    $values += [
-      'uid' => \Drupal::currentUser()->id(),
-    ];
   }
 
 }

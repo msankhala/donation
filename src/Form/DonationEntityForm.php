@@ -4,37 +4,63 @@ namespace Drupal\donation\Form;
 
 use Drupal\Core\Entity\ContentEntityForm;
 use Drupal\Core\Form\FormStateInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Class DonationEntityForm.
+ * Form controller for Donation edit forms.
+ *
+ * @ingroup donation
  */
 class DonationEntityForm extends ContentEntityForm {
+
+  /**
+   * The current user account.
+   *
+   * @var \Drupal\Core\Session\AccountProxyInterface
+   */
+  protected $account;
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container) {
+    // Instantiates this form class.
+    $instance = parent::create($container);
+    $instance->account = $container->get('current_user');
+    return $instance;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function buildForm(array $form, FormStateInterface $form_state) {
+    /* @var \Drupal\donation\Entity\DonationEntity $entity */
+    $form = parent::buildForm($form, $form_state);
+
+    return $form;
+  }
 
   /**
    * {@inheritdoc}
    */
   public function save(array $form, FormStateInterface $form_state) {
-    $entity = &$this->entity;
-    $message_params = [
-      '%entity_label' => $entity->id(),
-      '%content_entity_label' => $entity->getEntityType()->getLabel()->render(),
-      // '%bundle_label' => $entity->bundle->entity->label(),
-      '%bundle_label' => 'donation',
-    ];
+    $entity = $this->entity;
 
     $status = parent::save($form, $form_state);
 
     switch ($status) {
       case SAVED_NEW:
-        $this->messenger()->addStatus($this->t('Created the %bundle_label - %content_entity_label entity:  %entity_label.', $message_params));
+        $this->messenger()->addMessage($this->t('Created the %label Donation.', [
+          '%label' => $entity->label(),
+        ]));
         break;
 
       default:
-        $this->messenger()->addStatus($this->t('Saved the %bundle_label - %content_entity_label entity:  %entity_label.', $message_params));
+        $this->messenger()->addMessage($this->t('Saved the %label Donation.', [
+          '%label' => $entity->label(),
+        ]));
     }
-
-    $content_entity_id = $entity->getEntityType()->id();
-    $form_state->setRedirect("entity.{$content_entity_id}.canonical", [$content_entity_id => $entity->id()]);
+    $form_state->setRedirect('entity.donation.canonical', ['donation' => $entity->id()]);
   }
 
 }
