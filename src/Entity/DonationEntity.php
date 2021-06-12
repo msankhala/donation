@@ -32,7 +32,7 @@ use Drupal\user\UserInterface;
  *   admin_permission = "administer donation entity",
  *   handlers = {
  *     "view_builder" = "Drupal\Core\Entity\EntityViewBuilder",
- *     "list_builder" = "Drupal\donation\DonationListBuilder",
+ *     "list_builder" = "Drupal\donation\ListBuilder\DonationListBuilder",
  *     "views_data" = "Drupal\views\EntityViewsData",
  *     "form" = {
  *       "default" = "Drupal\donation\Form\DonationEntityForm",

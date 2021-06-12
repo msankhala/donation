@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\donation;
+namespace Drupal\donation\ListBuilder;
 
 use Drupal\Core\Datetime\DateFormatter;
 use Drupal\Core\Entity\EntityInterface;
@@ -64,6 +64,7 @@ class DonationListBuilder extends EntityListBuilder {
    * {@inheritdoc}
    */
   public function buildHeader() {
+    $header = [];
     $header['id'] = $this->t('Id');
     // $header['bundle_id'] = $this->t('Bundle');
     $header['owner'] = $this->t('Owner');
@@ -77,6 +78,7 @@ class DonationListBuilder extends EntityListBuilder {
    * {@inheritdoc}
    */
   public function buildRow(EntityInterface $entity) {
+    $row = [];
     /** @var \Drupal\donation\Entity\DonationInterface $entity */
     $row['id'] = $entity->toLink($entity->id());
     // $row['bundle_id'] = $entity->bundle();
