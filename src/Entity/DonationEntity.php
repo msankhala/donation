@@ -2,10 +2,10 @@
 
 namespace Drupal\donation\Entity;
 
-use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Entity\ContentEntityBase;
 use Drupal\Core\Entity\EntityChangedTrait;
-// use Drupal\Core\Entity\EntityPublishedTrait;
+// Use Drupal\Core\Entity\EntityPublishedTrait;.
+use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Entity\EntityTypeInterface;
 
 /**
@@ -62,7 +62,7 @@ use Drupal\Core\Entity\EntityTypeInterface;
 class DonationEntity extends ContentEntityBase implements DonationEntityInterface {
 
   use EntityChangedTrait;
-  // use EntityPublishedTrait;
+  // Use EntityPublishedTrait;.
 
   /**
    * {@inheritdoc}
@@ -102,33 +102,141 @@ class DonationEntity extends ContentEntityBase implements DonationEntityInterfac
 
     // Add the published field.
     // $fields += static::publishedBaseFieldDefinitions($entity_type);
-
-    $fields['name'] = BaseFieldDefinition::create('string')
-      ->setLabel(t('Name'))
-      ->setDescription(t('The name of the Donation entity.'))
+    // $fields['name'] = BaseFieldDefinition::create('string')
+    //   ->setLabel(t('Name'))
+    //   ->setDescription(t('The name of the Donation entity.'))
+    //   ->setSettings([
+    //     'max_length' => 50,
+    //     'text_processing' => 0,
+    //   ])
+    //   ->setDefaultValue('')
+    //   ->setDisplayOptions('view', [
+    //     'label' => 'above',
+    //     'type' => 'string',
+    //     'weight' => -4,
+    //   ])
+    //   ->setDisplayOptions('form', [
+    //     'type' => 'string_textfield',
+    //     'weight' => -4,
+    //   ])
+    //   ->setDisplayConfigurable('form', TRUE)
+    //   ->setDisplayConfigurable('view', TRUE)
+    //   ->setRequired(TRUE);
+    $fields['mode'] = BaseFieldDefinition::create('list_string')
+      ->setLabel(t('Donation Mode'))
+      ->setDescription(t('The Donation mode either offline/online.'))
       ->setSettings([
-        'max_length' => 50,
+        'allowed_values' => [
+          'online' => 'Online',
+          'offline' => 'Offline',
+        ],
         'text_processing' => 0,
       ])
-      ->setDefaultValue('')
+      ->setDefaultValue('online')
       ->setDisplayOptions('view', [
         'label' => 'above',
         'type' => 'string',
         'weight' => -4,
       ])
       ->setDisplayOptions('form', [
-        'type' => 'string_textfield',
+        'type' => 'options_select',
         'weight' => -4,
       ])
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE)
       ->setRequired(TRUE);
 
-    // $fields['status']->setDescription(t('A boolean indicating whether the Donation is published.'))
-    //   ->setDisplayOptions('form', [
-    //     'type' => 'boolean_checkbox',
-    //     'weight' => -3,
-    //   ]);
+    $fields['amount_pledged'] = BaseFieldDefinition::create('decimal')
+      ->setLabel(t('Amount Pledged'))
+      ->setDescription(t('The Donation amount that has been pledged by donor.'))
+      // ->setSettings([
+      //   'allowed_values' => [
+      //     'online' => 'Online',
+      //     'offline' => 'Offline',
+      //   ],
+      //   'text_processing' => 0,
+      // ])
+      ->setDefaultValue('')
+      ->setDisplayOptions('view', [
+        'label' => 'above',
+        'type' => 'string',
+        'weight' => -4,
+      ])
+      // ->setDisplayOptions('form', [
+      //   'type' => 'options_select',
+      //   'weight' => -4,
+      // ])
+      ->setDisplayConfigurable('form', TRUE)
+      ->setDisplayConfigurable('view', TRUE)
+      ->setRequired(FALSE);
+
+    $fields['amount'] = BaseFieldDefinition::create('decimal')
+      ->setLabel(t('Amount'))
+      ->setDescription(t('The Donation amount donated by donor.'))
+      // ->setDefaultValue('')
+      ->setDisplayOptions('view', [
+        'label' => 'above',
+        'type' => 'string',
+        'weight' => -4,
+      ])
+      ->setDisplayConfigurable('form', TRUE)
+      ->setDisplayConfigurable('view', TRUE)
+      ->setRequired(FALSE);
+
+    $fields['payment_type'] = BaseFieldDefinition::create('list_string')
+      ->setLabel(t('Payment Type'))
+      ->setDescription(t('The payment of donation is oneline or recurring.'))
+      ->setSettings([
+        'allowed_values' => [
+          'onetime' => 'Onetime',
+          'recurring' => 'Recurring',
+        ],
+        'text_processing' => 0,
+      ])
+      ->setDefaultValue('onetime')
+      ->setDisplayOptions('view', [
+        'label' => 'above',
+        'type' => 'string',
+        'weight' => -4,
+      ])
+      ->setDisplayOptions('form', [
+        'type' => 'options_select',
+        'weight' => -4,
+      ])
+      ->setDisplayConfigurable('form', TRUE)
+      ->setDisplayConfigurable('view', TRUE)
+      ->setRequired(TRUE);
+
+    $fields['start_and_end_date'] = BaseFieldDefinition::create('daterange')
+      ->setLabel(t('Donation Start and End Date'))
+      ->setDescription(t('The Donation start and end date.'))
+      // ->setDefaultValue(DrupalDateTime::createFromTimestamp(time()))
+      ->setDisplayOptions('view', [
+        'label' => 'above',
+        'type' => 'string',
+        'weight' => -4,
+      ])
+      ->setDisplayOptions('form', [
+        'type' => 'daterange_default',
+        'weight' => -4,
+      ])
+      ->setDisplayConfigurable('form', TRUE)
+      ->setDisplayConfigurable('view', TRUE)
+      ->setRequired(FALSE);
+
+    $fields['covers_transaction_fee'] = BaseFieldDefinition::create('boolean')
+      ->setLabel(t('User covers the transaction fee'))
+      ->setDefaultValue(FALSE)
+      ->setDisplayOptions('form', [
+        'type' => 'boolean_checkbox',
+        'settings' => [
+          'display_label' => TRUE,
+        ],
+        'weight' => 16,
+      ])
+      ->setDisplayConfigurable('form', TRUE)
+      ->setDisplayConfigurable('view', TRUE)
+      ->setRequired(FALSE);
 
     $fields['created'] = BaseFieldDefinition::create('created')
       ->setLabel(t('Created'))
