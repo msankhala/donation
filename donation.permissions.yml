@@ -1,28 +1,25 @@
-administer donation entity:
-  title: 'Administer Donation Entity'
-  restrict access: true
-
-# permission_callbacks:
-#   - '\Drupal\practical\PracticalPermissionsGenerator::practicalTypePermissions'
-add donation entities:
-  title: 'Create new Donation entities'
-
 administer donation entities:
   title: 'Administer Donation entities'
   description: 'Allow to access the administration form to configure Donation entities.'
   restrict access: true
 
-delete donation entities:
-  title: 'Delete Donation entities'
+add donation entities:
+  title: 'Create new Donation entities'
 
 edit donation entities:
   title: 'Edit Donation entities'
 
-view published donation entities:
+delete donation entities:
+  title: 'Delete Donation entities'
+
+view donation entities:
   title: 'View published Donation entities'
 
-view unpublished donation entities:
-  title: 'View unpublished Donation entities'
+# view published donation entities:
+#   title: 'View published Donation entities'
+
+# view unpublished donation entities:
+#   title: 'View unpublished Donation entities'
 
 permission_callbacks:
   - \Drupal\donation\Access\DonationEntityPermissions::generatePermissions
