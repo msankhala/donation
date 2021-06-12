@@ -2,9 +2,10 @@
 
 namespace Drupal\donation\Entity;
 
+use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Entity\ContentEntityBase;
-use Drupal\Core\Entity\EntityChangedTrait;
 // Use Drupal\Core\Entity\EntityPublishedTrait;.
+use Drupal\Core\Entity\EntityChangedTrait;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Entity\EntityTypeInterface;
 
@@ -42,10 +43,8 @@ use Drupal\Core\Entity\EntityTypeInterface;
  *   entity_keys = {
  *     "id" = "id",
  *     "bundle" = "type",
- *     "label" = "name",
  *     "uuid" = "uuid",
  *     "langcode" = "langcode",
- *     "published" = "status",
  *   },
  *   links = {
  *     "canonical" = "/admin/donations/donation/{donation}",
@@ -63,21 +62,19 @@ class DonationEntity extends ContentEntityBase implements DonationEntityInterfac
 
   use EntityChangedTrait;
   // Use EntityPublishedTrait;.
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getName() {
-    return $this->get('name')->value;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function setName($name) {
-    $this->set('name', $name);
-    return $this;
-  }
+  // /**
+  //  * {@inheritdoc}
+  //  */
+  // public function getName() {
+  //   return $this->get('name')->value;
+  // }
+  // /**
+  //  * {@inheritdoc}
+  //  */
+  // public function setName($name) {
+  //   $this->set('name', $name);
+  //   return $this;
+  // }.
 
   /**
    * {@inheritdoc}
@@ -219,7 +216,11 @@ class DonationEntity extends ContentEntityBase implements DonationEntityInterfac
     $fields['start_and_end_date'] = BaseFieldDefinition::create('daterange')
       ->setLabel(t('Donation Start and End Date'))
       ->setDescription(t('The Donation start and end date.'))
-      // ->setDefaultValue(DrupalDateTime::createFromTimestamp(time()))
+      ->setDefaultValue(DrupalDateTime::createFromTimestamp(time()))
+      ->setSettings([
+        'datetime_type' => 'date',
+        // 'date source' => 'value',
+      ])
       ->setDisplayOptions('view', [
         'label' => 'above',
         'type' => 'string',
