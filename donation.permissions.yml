@@ -13,7 +13,7 @@ delete donation entities:
   title: 'Delete Donation entities'
 
 view donation entities:
-  title: 'View published Donation entities'
+  title: 'View Donation entities'
 
 # view published donation entities:
 #   title: 'View published Donation entities'

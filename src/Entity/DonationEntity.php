@@ -101,7 +101,7 @@ class DonationEntity extends ContentEntityBase implements DonationEntityInterfac
     $fields = parent::baseFieldDefinitions($entity_type);
 
     // Add the published field.
-    $fields += static::publishedBaseFieldDefinitions($entity_type);
+    // $fields += static::publishedBaseFieldDefinitions($entity_type);
 
     $fields['name'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Name'))
@@ -124,11 +124,11 @@ class DonationEntity extends ContentEntityBase implements DonationEntityInterfac
       ->setDisplayConfigurable('view', TRUE)
       ->setRequired(TRUE);
 
-    $fields['status']->setDescription(t('A boolean indicating whether the Donation is published.'))
-      ->setDisplayOptions('form', [
-        'type' => 'boolean_checkbox',
-        'weight' => -3,
-      ]);
+    // $fields['status']->setDescription(t('A boolean indicating whether the Donation is published.'))
+    //   ->setDisplayOptions('form', [
+    //     'type' => 'boolean_checkbox',
+    //     'weight' => -3,
+    //   ]);
 
     $fields['created'] = BaseFieldDefinition::create('created')
       ->setLabel(t('Created'))

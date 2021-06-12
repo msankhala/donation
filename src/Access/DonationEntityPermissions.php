@@ -2,17 +2,15 @@
 
 namespace Drupal\donation\Access;
 
+use Drupal\donation\Entity\DonationEntityType;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
-use Drupal\donation\Entity\DonationEntity;
-
 
 /**
  * Provides dynamic permissions for Donation of different types.
  *
  * @ingroup donation
- *
  */
-class DonationEntityPermissions{
+class DonationEntityPermissions {
 
   use StringTranslationTrait;
 
@@ -26,7 +24,7 @@ class DonationEntityPermissions{
   public function generatePermissions() {
     $perms = [];
 
-    foreach (DonationEntity::loadMultiple() as $type) {
+    foreach (DonationEntityType::loadMultiple() as $type) {
       $perms += $this->buildPermissions($type);
     }
 
@@ -42,7 +40,7 @@ class DonationEntityPermissions{
    * @return array
    *   An associative array of permission names and descriptions.
    */
-  protected function buildPermissions(DonationEntity $type) {
+  protected function buildPermissions(DonationEntityType $type) {
     $type_id = $type->id();
     $type_params = ['%type_name' => $type->label()];
 
