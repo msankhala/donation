@@ -17,6 +17,13 @@ use Drupal\Core\Entity\EntityTypeInterface;
  * @ContentEntityType(
  *   id = "donation",
  *   label = @Translation("Donation"),
+ *   label_collection = @Translation("Donations"),
+ *   label_singular = @Translation("Donation"),
+ *   label_plural = @Translation("Donations"),
+ *   label_count = @PluralTranslation(
+ *     singular = "@count donation",
+ *     plural = "@count donations",
+ *   ),
  *   bundle_label = @Translation("Donation type"),
  *   handlers = {
  *     "view_builder" = "Drupal\Core\Entity\EntityViewBuilder",
@@ -136,7 +143,7 @@ class DonationEntity extends ContentEntityBase implements DonationEntityInterfac
         'weight' => -4,
       ])
       ->setDisplayOptions('form', [
-        'type' => 'options_select',
+        'type' => 'options_buttons',
         'weight' => -4,
       ])
       ->setDisplayConfigurable('form', TRUE)
@@ -206,7 +213,7 @@ class DonationEntity extends ContentEntityBase implements DonationEntityInterfac
         'weight' => -4,
       ])
       ->setDisplayOptions('form', [
-        'type' => 'options_select',
+        'type' => 'options_buttons',
         'weight' => -4,
       ])
       ->setDisplayConfigurable('form', TRUE)

@@ -10,6 +10,12 @@ use Drupal\Core\Config\Entity\ConfigEntityBundleBase;
  * @ConfigEntityType(
  *   id = "donation_type",
  *   label = @Translation("Donation type"),
+ *   label_singular = @Translation("Donation type"),
+ *   label_plural = @Translation("Donation types"),
+ *   label_count = @PluralTranslation(
+ *     singular = "@count donation type",
+ *     plural = "@count donation types",
+ *   ),
  *   handlers = {
  *     "view_builder" = "Drupal\Core\Entity\EntityViewBuilder",
  *     "list_builder" = "Drupal\donation\ListBuilder\DonationEntityTypeListBuilder",
