@@ -38,3 +38,18 @@ function donation_theme_suggestions_donation(array $variables) {
   $suggestions[] = 'donation__' . $entity->id() . '__' . $sanitized_view_mode;
   return $suggestions;
 }
+
+/**
+ * Implements hook_entity_base_field_info_alter().
+ */
+
+function donation_entity_base_field_info_alter(&$fields, $entity_type) {
+  // By default email address field of user entity is hidden in 'Manage display"
+  // tab.
+  if ($entity_type->id() == 'user') {
+    if (isset($fields['mail'])) {
+      $fields['mail']->setDisplayConfigurable('view', TRUE);
+      $fields['mail']->setDisplayConfigurable('form', TRUE);
+    }
+  }
+}

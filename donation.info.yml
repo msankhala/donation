@@ -5,3 +5,4 @@ core_version_requirement: ^8.8 || ^9
 package: Custom Entities
 dependencies:
   - drupal:datetime_range
+  - drupal:views
