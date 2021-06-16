@@ -59,7 +59,7 @@ use Drupal\Core\Entity\EntityTypeInterface;
  *     "add-form" = "/admin/donations/donation/add/{donation_type}",
  *     "edit-form" = "/admin/donations/donation/{donation}/edit",
  *     "delete-form" = "/admin/donations/donation/{donation}/delete",
- *     "collection" = "/admin/donations/donation",
+ *     "collection" = "/admin/donations",
  *   },
  *   bundle_entity_type = "donation_type",
  *   field_ui_base_route = "entity.donation_type.edit_form"
@@ -250,6 +250,22 @@ class DonationEntity extends ContentEntityBase implements DonationEntityInterfac
           'display_label' => TRUE,
         ],
         'weight' => 16,
+      ])
+      ->setDisplayConfigurable('form', TRUE)
+      ->setDisplayConfigurable('view', TRUE)
+      ->setRequired(FALSE);
+
+    $fields['user'] = BaseFieldDefinition::create('entity_reference')
+      ->setLabel(t('User account'))
+      ->setDescription(t('The user account this donation is connected to'))
+      ->setSetting('target_type', 'user')
+      ->setSetting('handler', 'views')
+      ->setSetting('handler_settings', [
+        'view' => [
+          'view_name' => 'donation_user',
+          'display_name' => 'entity_reference_1',
+          'arguments' => [],
+        ],
       ])
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE)
