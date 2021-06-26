@@ -50,6 +50,8 @@ class DonationModeWidgetType extends WidgetBase {
    * {@inheritdoc}
    */
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
+    $donationModeField = $items[$delta];
+
     $element['mode'] = [
       '#type' => 'radios',
       '#title' => $this->t('Donation Mode'),
@@ -57,7 +59,7 @@ class DonationModeWidgetType extends WidgetBase {
         'online' => $this->t('Online'),
         'offline' => $this->t('Offline'),
       ],
-      '#default_value' => $this->getSetting('mode'),
+      '#default_value' => !$donationModeField->isEmpty() ? $donationModeField->mode : $this->getSetting('mode'),
       '#required' => FALSE,
     ];
 
@@ -68,6 +70,7 @@ class DonationModeWidgetType extends WidgetBase {
         'cash' => $this->t('Cash'),
         'cheque' => $this->t('Cheque'),
       ],
+      '#default_value' => !$donationModeField->isEmpty() ? $donationModeField->mode_type : $this->getSetting('mode_type'),
       "#empty_option" => $this->t('- Select -'),
       '#required' => FALSE,
       '#description' => $this->t('Choose the donation mode type like cash, cheque etc.'),
