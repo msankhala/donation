@@ -29,7 +29,7 @@ class DonationEntityListBuilder extends EntityListBuilder {
   public function buildRow(EntityInterface $entity) {
     $row = [];
     /* @var \Drupal\donation\Entity\DonationEntity $entity */
-    $row['id'] = $entity->id();
+    $row['id'] = $entity->toLink($entity->id());
     $row['name'] = Link::createFromRoute(
       $entity->label(),
       'entity.donation.edit_form',

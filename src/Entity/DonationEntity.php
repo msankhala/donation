@@ -261,10 +261,11 @@ class DonationEntity extends ContentEntityBase implements DonationEntityInterfac
       ->setSetting('target_type', 'user')
       ->setSetting('handler', 'views')
       ->setSetting('handler_settings', [
+        'target_bundles' => ['user' => 'user'],
         'view' => [
           'view_name' => 'donation_user',
           'display_name' => 'entity_reference_1',
-          'arguments' => [],
+          // 'arguments' => ['type' => 'user'],
         ],
       ])
       ->setDisplayConfigurable('form', TRUE)

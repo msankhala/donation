@@ -6,3 +6,4 @@ package: Custom Entities
 dependencies:
   - drupal:datetime_range
   - drupal:views
+  # - drupal:date_popup
